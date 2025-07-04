@@ -42,5 +42,57 @@ create table items
     picture_9_url  varchar(255),
     picture_10_url varchar(255),
     owner_id       char(36),
-    constraint owner_fk foreign key (owner_id) references users (id)
+    category_id    char(36),
+    constraint owner_fk foreign key (owner_id) references users (id),
+    constraint category_fk foreign key (category_id) references categories (id)
 );
+
+create table categories
+(
+    id          char(36) primary key,
+    name        varchar(255) not null,
+    description text,
+    created_at  timestamp    not null,
+    updated_at  timestamp,
+    deleted_at  timestamp
+);
+
+create table comments
+(
+    id                char(36) primary key,
+    text              text      not null,
+    item_id           char(36),
+    user_id           char(36),
+    parent_comment_id char(36),
+    created_at        timestamp not null,
+    updated_at        timestamp,
+    deleted_at        timestamp,
+    constraint item_fk foreign key (item_id) references items (id),
+    constraint user_fk foreign key (user_id) references users (id),
+    constraint comment_fk foreign key (parent_comment_id) references comments (id)
+);
+
+create table reviews
+(
+    id            char(36) primary key,
+    item_rating   int       not null,
+    owner_rating  int       not null,
+    item_comment  text,
+    owner_comment text,
+    owner_id      char(36),
+    user_id       char(36),
+    item_id       char(36),
+    created_at    timestamp not null,
+    updated_at    timestamp,
+    deleted_at    timestamp,
+    constraint review_user_fk foreign key (user_id) references users (id),
+    constraint review_owner_fk foreign key (owner_id) references users (id),
+    constraint review_item_fk foreign key (item_id) references items (id),
+    constraint i_rating_range check ( item_rating between 1 and 10),
+    constraint u_rating_range check ( owner_rating between 1 and 10)
+);
+
+
+
+
+

@@ -1,11 +1,11 @@
-package io.templend.model.user;
+package io.templend.model;
 
 import com.google.gson.annotations.SerializedName;
-import io.templend.model.AbstractModel;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 
 public class User extends AbstractModel {
@@ -35,13 +35,12 @@ public class User extends AbstractModel {
     private Boolean phoneVerified;
     @SerializedName("birthday")
     private String birthday;
+    @SerializedName("items")
+    private List<Item> items;
 
     public User(ResultSet rs) throws SQLException {
         setUsername(rs.getString("username"));
         setId(rs.getString("id"));
-        setCreatedAt(String.valueOf(rs.getTimestamp("created_at")));
-        setUpdatedAt(String.valueOf(rs.getTimestamp("updated_at")));
-        setDeletedAt(String.valueOf(rs.getTimestamp("deleted_at")));
         setFirstName(rs.getString("first_name"));
         setLastName(rs.getString("last_name"));
         setEmail(rs.getString("email"));
@@ -71,9 +70,6 @@ public class User extends AbstractModel {
         ps.setBoolean(12, getEmailVerified());
         ps.setBoolean(13, getPhoneVerified());
         ps.setString(14, getBirthday());
-        ps.setString(15, getCreatedAt());
-        ps.setString(16, getUpdatedAt());
-        ps.setString(17, getDeletedAt());
     }
 
     @Override
@@ -189,5 +185,13 @@ public class User extends AbstractModel {
         BORROWER,
         LENDER,
         ADMIN
+    }
+
+    public List<Item> getItems() {
+        return items;
+    }
+
+    public void setItems(List<Item> items) {
+        this.items = items;
     }
 }

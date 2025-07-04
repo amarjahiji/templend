@@ -1,6 +1,6 @@
 package io.templend.serviceImpl;
 
-import io.templend.model.user.User;
+import io.templend.model.User;
 import io.templend.query.UserSQL;
 import io.templend.service.UserService;
 import io.templend.util.DatabaseConnector;
@@ -10,6 +10,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 public class UserServiceImpl extends AbstractServiceImpl implements UserService {
     public List<User> get() throws Exception {
@@ -127,5 +128,26 @@ public class UserServiceImpl extends AbstractServiceImpl implements UserService 
         if (id != null && !id.equals(user.getId())) {
             throw new Exception("User Already Exists with that username/email/phone-number.");
         }
+    }
+
+    @Override
+    public List<User> getByIds(Set<String> ids) throws Exception {
+        List<User> users = new ArrayList<>();
+        ResultSet rs = null;
+        PreparedStatement ps = null;
+        Connection connection = DatabaseConnector.getConnection();
+        try {
+            ps = connection.prepareStatement(UserSQL.GET_BY_IDS);
+            ps.setString(1, "(" + String.join(",", ids) + ")");
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                users.add(new User(rs));
+            }
+        } finally {
+            closeResultSet(rs);
+            closePreparedStatement(ps);
+            closeConnection(connection);
+        }
+        return users;
     }
 }

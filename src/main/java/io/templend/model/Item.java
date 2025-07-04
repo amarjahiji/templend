@@ -1,7 +1,6 @@
-package io.templend.model.item;
+package io.templend.model;
 
 import com.google.gson.annotations.SerializedName;
-import io.templend.model.AbstractModel;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -35,8 +34,29 @@ public class Item extends AbstractModel {
     private String picture10Url;
     @SerializedName("owner_id")
     private String ownerId;
+    @SerializedName("category_id")
+    private String categoryId;
+
+    public Item(Item other) {
+        this.title = other.title;
+        this.description = other.description;
+        this.available = other.available;
+        this.picture1Url = other.picture1Url;
+        this.picture2Url = other.picture2Url;
+        this.picture3Url = other.picture3Url;
+        this.picture4Url = other.picture4Url;
+        this.picture5Url = other.picture5Url;
+        this.picture6Url = other.picture6Url;
+        this.picture7Url = other.picture7Url;
+        this.picture8Url = other.picture8Url;
+        this.picture9Url = other.picture9Url;
+        this.picture10Url = other.picture10Url;
+        this.ownerId = other.ownerId;
+        this.categoryId = other.categoryId;
+    }
 
     public Item(ResultSet rs) throws Exception {
+        setId(rs.getString("id"));
         setTitle(rs.getString("title"));
         setDescription(rs.getString("description"));
         setAvailable(rs.getBoolean("available"));
@@ -51,9 +71,10 @@ public class Item extends AbstractModel {
         setPicture9Url(rs.getString("picture_9_url"));
         setPicture10Url(rs.getString("picture_10_url"));
         setOwnerId(rs.getString("owner_id"));
+        setCategoryId(rs.getString("category_id"));
     }
 
-    public void populatePs (PreparedStatement ps) throws Exception {
+    public void populatePs(PreparedStatement ps) throws Exception {
         ps.setString(1, getTitle());
         ps.setString(2, getDescription());
         ps.setBoolean(3, getAvailable());
@@ -68,6 +89,11 @@ public class Item extends AbstractModel {
         ps.setString(12, getPicture9Url());
         ps.setString(13, getPicture10Url());
         ps.setString(14, getOwnerId());
+        ps.setString(15, getId());
+        ps.setString(16, getCreatedAt());
+        ps.setString(17, getUpdatedAt());
+        ps.setString(18, getDeletedAt());
+        ps.setString(19, getCategoryId());
     }
 
     @Override
@@ -185,5 +211,13 @@ public class Item extends AbstractModel {
 
     public void setOwnerId(String ownerId) {
         this.ownerId = ownerId;
+    }
+
+    public String getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(String categoryId) {
+        this.categoryId = categoryId;
     }
 }

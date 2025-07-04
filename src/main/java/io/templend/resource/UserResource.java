@@ -1,6 +1,6 @@
 package io.templend.resource;
 
-import io.templend.model.user.User;
+import io.templend.model.User;
 import io.templend.service.UserService;
 import io.templend.serviceImpl.UserServiceImpl;
 import jakarta.ws.rs.*;

@@ -1,6 +1,9 @@
 package io.templend.serviceImpl;
 
-import io.templend.model.item.Item;
+import io.templend.model.Category;
+import io.templend.model.Item;
+import io.templend.model.Post;
+import io.templend.model.User;
 import io.templend.query.ItemSQL;
 import io.templend.service.ItemService;
 import io.templend.util.DatabaseConnector;
@@ -9,8 +12,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class ItemServiceImpl extends AbstractServiceImpl implements ItemService {
+
     @Override
     public List<Item> get() throws Exception {
         List<Item> items = new ArrayList<>();
@@ -37,7 +43,7 @@ public class ItemServiceImpl extends AbstractServiceImpl implements ItemService 
         PreparedStatement ps = null;
         Connection connection = DatabaseConnector.getConnection();
         try {
-            ps = connection.prepareStatement(ItemSQL.GET);
+            ps = connection.prepareStatement(ItemSQL.GET_BY_ID);
             ps.setString(1, id);
             rs = ps.executeQuery();
             if (rs.next()) {
@@ -131,10 +137,106 @@ public class ItemServiceImpl extends AbstractServiceImpl implements ItemService 
             closeConnection(connection);
         }
         response.put("items", items);
-        response.put("totalItems", totalItems);
+        response.put("total Items", totalItems);
         response.put("totalPages", (int) Math.ceil((double) totalItems / size));
         response.put("currentPage", page);
 
         return response;
+    }
+
+    @Override
+    public List<Item> getByKeyword(String keyword) throws Exception {
+        List<Item> items = new ArrayList<>();
+        ResultSet rs = null;
+        PreparedStatement ps = null;
+        Connection connection = DatabaseConnector.getConnection();
+        try {
+            ps = connection.prepareStatement(ItemSQL.GET_BY_KEYWORD);
+            ps.setString(1, "%" + keyword + "%");
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                items.add(new Item(rs));
+            }
+        } finally {
+            closeResultSet(rs);
+            closePreparedStatement(ps);
+            closeConnection(connection);
+        }
+        return items;
+    }
+
+    @Override
+    public List<Item> getByAvailability(boolean available) throws Exception {
+        List<Item> items = new ArrayList<>();
+        ResultSet rs = null;
+        PreparedStatement ps = null;
+        Connection connection = DatabaseConnector.getConnection();
+        try {
+            ps = connection.prepareStatement(ItemSQL.GET_BY_AVAILABILITY);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                items.add(new Item(rs));
+            }
+        } finally {
+            closeResultSet(rs);
+            closePreparedStatement(ps);
+            closeConnection(connection);
+        }
+        return items;
+    }
+
+    @Override
+    public Map<String, List<Item>> getItemsByCategoryIds(List<String> categoryIds) throws Exception {
+        Map<String, List<Item>> itemsByCategory = new HashMap<>();
+        if (categoryIds == null) {
+            return itemsByCategory;
+        }
+        String readableCategoryIds = "(" + String.join(",", categoryIds) + ")";
+        ResultSet rs = null;
+        PreparedStatement ps = null;
+        Connection connection = DatabaseConnector.getConnection();
+        try {
+            ps = connection.prepareStatement(ItemSQL.GET_BY_CATEGORY_IDS);
+            ps.setString(1, readableCategoryIds);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                String id = rs.getString("id");
+                itemsByCategory.computeIfAbsent(id, k -> new ArrayList<>()).add(new Item(rs));
+            }
+        } finally {
+            closeResultSet(rs);
+            closePreparedStatement(ps);
+            closeConnection(connection);
+        }
+        return itemsByCategory;
+    }
+
+    @Override
+    public List<Item> getByCategoryId(String id) throws Exception {
+        List<Item> items = new ArrayList<>();
+        ResultSet rs = null;
+        PreparedStatement ps = null;
+        Connection connection = DatabaseConnector.getConnection();
+        try {
+            ps = connection.prepareStatement(ItemSQL.GET_BY_CATEGORY_ID);
+            ps.setString(1, id);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                items.add(new Item(rs));
+            }
+        } finally {
+            closeResultSet(rs);
+            closePreparedStatement(ps);
+            closeConnection(connection);
+        }
+        return items;
+    }
+
+    @Override
+    public Post getWithDetailsById(String id) throws Exception {
+        Item item = getById(id);
+        User owner = new UserServiceImpl().getById(item.getOwnerId());
+        Category category = new CategoryServiceImpl().getById(item.getCategoryId());
+        return new Post(item, owner, category);
     }
 }

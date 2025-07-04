@@ -47,4 +47,27 @@ public class ItemResourceTest extends TestCase {
         Response response = new ItemResource().getPaginated(page, size);
         System.out.println(response.getEntity());
     }
+
+    public void testGetByKeyword() throws Exception {
+        String keyword = "";
+        Response response = new ItemResource().getByKeyword(keyword);
+        System.out.println(response.getEntity());
+    }
+
+    public void testGetByAvailability() throws Exception {
+        boolean available = true;
+        Response response = new ItemResource().getByAvailability(available);
+        System.out.println(response.getEntity());
+    }
+
+    public void testGetWithDetails() throws Exception {
+    Response response = new ItemResource().getWithDetails();
+    System.out.println(response.getEntity());
+    }
+
+    public void testGetWithDetailsById() throws Exception {
+        String id = "";
+        Response response = new ItemResource().getWithDetailsById(id);
+        System.out.println(response.getEntity());
+    }
 }

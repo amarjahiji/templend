@@ -1,6 +1,6 @@
 package io.templend.serviceImpl;
 
-import io.templend.model.user.User;
+import io.templend.model.User;
 import jakarta.ws.rs.BadRequestException;
 
 import java.sql.Connection;

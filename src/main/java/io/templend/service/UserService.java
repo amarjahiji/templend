@@ -1,8 +1,9 @@
 package io.templend.service;
 
-import io.templend.model.user.User;
+import io.templend.model.User;
 
 import java.util.List;
+import java.util.Set;
 
 public interface UserService {
     List<User> get() throws Exception;
@@ -14,4 +15,6 @@ public interface UserService {
     String delete(String id) throws Exception;
 
     String login (User user) throws Exception;
+
+    List<User> getByIds(Set<String> ids) throws Exception;
 }

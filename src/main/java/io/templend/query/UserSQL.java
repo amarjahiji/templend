@@ -53,4 +53,6 @@ public class UserSQL {
             "  and password = ?\n" +
             "  and email_verified = 1\n" +
             "  and (phone is null or phone_verified = 1);";
+
+    public static final String GET_BY_IDS = "select * from users where id in ?";
 }
