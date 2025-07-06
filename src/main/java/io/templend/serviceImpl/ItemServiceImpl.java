@@ -12,8 +12,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.*;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 public class ItemServiceImpl extends AbstractServiceImpl implements ItemService {
 
@@ -235,7 +233,7 @@ public class ItemServiceImpl extends AbstractServiceImpl implements ItemService 
     @Override
     public Post getWithDetailsById(String id) throws Exception {
         Item item = getById(id);
-        User owner = new UserServiceImpl().getById(item.getOwnerId());
+        User owner = new UserServiceImpl().getById(item.getUserId());
         Category category = new CategoryServiceImpl().getById(item.getCategoryId());
         return new Post(item, owner, category);
     }

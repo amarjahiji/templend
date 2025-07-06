@@ -88,11 +88,31 @@ create table reviews
     constraint review_user_fk foreign key (user_id) references users (id),
     constraint review_owner_fk foreign key (owner_id) references users (id),
     constraint review_item_fk foreign key (item_id) references items (id),
-    constraint i_rating_range check ( item_rating between 1 and 10),
-    constraint u_rating_range check ( owner_rating between 1 and 10)
+    constraint i_rating_range check (item_rating between 1 and 10),
+    constraint u_rating_range check (owner_rating between 1 and 10)
 );
 
+create table wishlists
+(
+    user_id    char(36),
+    item_id    char(36),
+    created_at timestamp not null,
+    deleted_at timestamp,
+    primary key (user_id, item_id)
+);
 
-
+create table borrowing_requests
+(
+    id          char(36) primary key,
+    borrower_id char(36),
+    lender_id   char(36),
+    item_id     char(36),
+    status      enum ('PENDING', 'APPROVED', 'REJECTED', 'CANCELLED'),
+    created_at  timestamp not null,
+    updated_at  timestamp,
+    constraint br_lender_id_fk foreign key (lender_id) references users (id),
+    constraint br_borrower_id_fk foreign key (borrower_id) references users (id),
+    constraint br_item_id_fk foreign key (item_id) references items (id)
+);
 
 

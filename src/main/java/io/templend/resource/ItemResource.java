@@ -78,12 +78,12 @@ public class ItemResource extends AbstractResource {
         return Response.ok(itemService.getByAvailability(available)).build();
     }
 
-    @GET
-    @Path("/details")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response getWithDetails() throws Exception {
-        return Response.ok(itemService.getWithDetails()).build();
-    }
+//    @GET
+//    @Path("/details")
+//    @Produces(MediaType.APPLICATION_JSON)
+//    public Response getWithDetails() throws Exception {
+//        return Response.ok(itemService.getWithDetails()).build();
+//    }
 
     @GET
     @Path("{id}/details")

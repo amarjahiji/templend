@@ -2,7 +2,7 @@
   <profile version="1.0">
     <option name="myName" value="Project Default" />
     <inspection_tool class="AutoCloseableResource" enabled="true" level="WARNING" enabled_by_default="true">
-      <option name="METHOD_MATCHER_CONFIG" value="java.util.Formatter,format,java.io.Writer,append,com.google.common.base.Preconditions,checkNotNull,org.hibernate.Session,close,java.io.PrintWriter,printf,java.io.PrintStream,printf,java.lang.foreign.Arena,ofAuto,java.lang.foreign.Arena,global,io.templend.resource.UserResource,create|update|delete,io.templend.resource.ItemResource,create|update|delete,io.templend.resource.CategoryResource,create|update,io.templend.resource.CommentResource,create|update,io.templend.resource.ReviewResource,create|update" />
+      <option name="METHOD_MATCHER_CONFIG" value="java.util.Formatter,format,java.io.Writer,append,com.google.common.base.Preconditions,checkNotNull,org.hibernate.Session,close,java.io.PrintWriter,printf,java.io.PrintStream,printf,java.lang.foreign.Arena,ofAuto,java.lang.foreign.Arena,global,io.templend.resource.UserResource,create|update|delete,io.templend.resource.ItemResource,create|update|delete,io.templend.resource.CategoryResource,create|update,io.templend.resource.CommentResource,create|update,io.templend.resource.ReviewResource,create|update,io.templend.resource.BorrowRequestResource,create|update" />
     </inspection_tool>
     <inspection_tool class="HttpUrlsUsage" enabled="true" level="WEAK WARNING" enabled_by_default="true">
       <option name="ignoredUrls">

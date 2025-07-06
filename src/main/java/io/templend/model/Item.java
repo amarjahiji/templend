@@ -32,28 +32,10 @@ public class Item extends AbstractModel {
     private String picture9Url;
     @SerializedName("picture_10_url")
     private String picture10Url;
-    @SerializedName("owner_id")
-    private String ownerId;
+    @SerializedName("user_id")
+    private String userId;
     @SerializedName("category_id")
     private String categoryId;
-
-    public Item(Item other) {
-        this.title = other.title;
-        this.description = other.description;
-        this.available = other.available;
-        this.picture1Url = other.picture1Url;
-        this.picture2Url = other.picture2Url;
-        this.picture3Url = other.picture3Url;
-        this.picture4Url = other.picture4Url;
-        this.picture5Url = other.picture5Url;
-        this.picture6Url = other.picture6Url;
-        this.picture7Url = other.picture7Url;
-        this.picture8Url = other.picture8Url;
-        this.picture9Url = other.picture9Url;
-        this.picture10Url = other.picture10Url;
-        this.ownerId = other.ownerId;
-        this.categoryId = other.categoryId;
-    }
 
     public Item(ResultSet rs) throws Exception {
         setId(rs.getString("id"));
@@ -70,7 +52,7 @@ public class Item extends AbstractModel {
         setPicture8Url(rs.getString("picture_8_url"));
         setPicture9Url(rs.getString("picture_9_url"));
         setPicture10Url(rs.getString("picture_10_url"));
-        setOwnerId(rs.getString("owner_id"));
+        setUserId(rs.getString("owner_id"));
         setCategoryId(rs.getString("category_id"));
     }
 
@@ -88,7 +70,7 @@ public class Item extends AbstractModel {
         ps.setString(11, getPicture8Url());
         ps.setString(12, getPicture9Url());
         ps.setString(13, getPicture10Url());
-        ps.setString(14, getOwnerId());
+        ps.setString(14, getUserId());
         ps.setString(15, getId());
         ps.setString(16, getCreatedAt());
         ps.setString(17, getUpdatedAt());
@@ -205,12 +187,12 @@ public class Item extends AbstractModel {
         this.picture10Url = picture10Url;
     }
 
-    public String getOwnerId() {
-        return ownerId;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setOwnerId(String ownerId) {
-        this.ownerId = ownerId;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public String getCategoryId() {
